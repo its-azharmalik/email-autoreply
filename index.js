@@ -14,7 +14,7 @@ app.get('/', async (req, res) => {
 	await gmailService(auth, LABEL_NAME).catch(console.error);
 	if (auth?.credentials.access_token === undefined) {
 		res.send('There is some error please retry login');
-	} else res.send('You have successfully subscriobes to our services');
+	} else res.send('You have successfully subscribed to our services');
 });
 
 app.listen(PORT, () => {
