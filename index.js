@@ -2,7 +2,7 @@ const express = require('express');
 const colors = require('colors');
 
 // Services
-const { gmailService } = require('./services/gmailServices');
+const { gmailService } = require('./services/gmailService');
 const { authService } = require('./services/authService');
 
 // Server Setup
