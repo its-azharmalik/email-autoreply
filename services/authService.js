@@ -3,33 +3,39 @@ const { authenticate } = require('@google-cloud/local-auth');
 const fs = require('fs').promises;
 const path = require('path');
 
-const authService = async () => {
-	const credentials = await fs.readFile('credentials.json');
-
-	// scopes for GMAIL API - reading, sending, labelling
-	const scopes = [
-		'https://www.googleapis.com/auth/gmail.readonly',
-		'https://www.googleapis.com/auth/gmail.send',
-		'https://www.googleapis.com/auth/gmail.labels',
-		'https://mail.google.com/',
-	];
-
+const authService = async (serviceType) => {
 	try {
-		// authenticating and calling the gmail API
-		const auth = await authenticate({
-			keyfilePath: path.join(process.cwd(), 'credentials.json'),
-			scopes,
-		});
+		const credentials = await fs.readFile('credentials.json');
 
-		const gmail = google.gmail({ version: 'v1', auth });
+		// scopes for GMAIL API - reading, sending, labelling
+		const scopes = [
+			'https://www.googleapis.com/auth/gmail.readonly',
+			'https://www.googleapis.com/auth/gmail.send',
+			'https://www.googleapis.com/auth/gmail.labels',
+			'https://mail.google.com/',
+		];
 
-		const response = await gmail.users.labels.list({
-			userId: 'me',
-		});
+		if (serviceType === 'outlook') {
+		}
 
-		const LABEL_NAME = 'Vacation';
+		if (serviceType === 'google') {
+			// authenticating and calling the gmail API
+			const auth = await authenticate({
+				keyfilePath: path.join(process.cwd(), 'credentials.json'),
+				scopes,
+			});
 
-		return { auth, gmail, response, LABEL_NAME };
+			const gmail = google.gmail({ version: 'v1', auth });
+
+			const response = await gmail.users.labels.list({
+				userId: 'me',
+			});
+
+			// use a label name using AI;
+			const LABEL_NAME = 'TEST_LABEL';
+
+			return { auth, gmail, response, LABEL_NAME };
+		}
 	} catch (error) {
 		console.log(error);
 	}
